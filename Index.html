@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ultimate Love 💙</title>
+
+<style>
+body{
+  margin:0;
+  background:black;
+  color:white;
+  font-family:sans-serif;
+  text-align:center;
+}
+
+#main{display:none;}
+
+button{
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  background:#00aaff;
+  color:white;
+  margin:5px;
+}
+
+/* chat */
+#chat{
+  height:180px;
+  overflow:auto;
+  background:#111;
+  margin:10px;
+  padding:10px;
+  border-radius:10px;
+  text-align:left;
+}
+
+.user{background:#00aaff;padding:8px;border-radius:10px;margin:5px;display:inline-block;}
+.bot{background:#333;padding:8px;border-radius:10px;margin:5px;display:inline-block;}
+.typing{color:gray;font-style:italic;}
+
+/* slideshow */
+#slide{width:250px;border-radius:15px;transition:0.5s;}
+
+/* hearts */
+.heart{position:fixed;animation:float 5s linear;}
+@keyframes float{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- LOCK -->
+<div id="lock">
+<h2>🔐 Enter Password</h2>
+<input type="password" id="pass">
+<button onclick="unlock()">Enter</button>
+</div>
+
+<!-- MAIN -->
+<div id="main">
+
+<h2>💙 Forever Us 💙</h2>
+<p id="welcome"></p>
+
+<div id="typing"></div>
+
+<button onclick="startLove()">💌 Start</button>
+<button onclick="loveLetter()">📜 Letter</button>
+<button onclick="videoCall()">📹 Call</button>
+<button onclick="showSecret()">🔐 Secret</button>
+
+<p id="msg"></p>
+
+<!-- CHAT -->
+<div id="chat"></div>
+<input type="text" id="input" placeholder="Type message...">
+<button onclick="sendMsg()">Send</button>
+
+<h3>📸 Memories</h3>
+<img id="slide" src="1.jpg">
+
+<audio id="music" src="song.mp3"></audio>
+
+<p id="secret" style="display:none;">You are my hidden world 💙</p>
+
+</div>
+
+<script>
+
+// unlock
+function unlock(){
+  if(pass.value==="1234"){
+    lock.style.display="none";
+    main.style.display="block";
+
+    let name=prompt("Your name 💙");
+    window.n=name;
+
+    welcome.innerHTML="Welcome "+name+" 💕";
+    music.play();
+    startTyping();
+  }
+}
+
+// typing intro
+function startTyping(){
+  let t="Even miles apart... we are one 💙";
+  let i=0;
+  typing.innerHTML="";
+  function type(){
+    if(i<t.length){
+      typing.innerHTML+=t[i];
+      i++;
+      setTimeout(type,40);
+    }
+  }
+  type();
+}
+
+// start
+function startLove(){
+  msg.innerHTML="I love you "+window.n+" 💙";
+}
+
+// RANDOM LETTER
+function loveLetter(){
+  let letters=[
+    "You are my favorite notification 💙",
+    "Distance means nothing when you mean everything ❤️",
+    "I miss you every second 🥺",
+    "You are my forever 💕"
+  ];
+  let r=letters[Math.floor(Math.random()*letters.length)];
+  alert("Dear "+window.n+" 💙\n\n"+r);
+}
+
+// call
+function videoCall(){
+  alert("📹 Calling "+window.n+"...");
+}
+
+// secret
+function showSecret(){
+  secret.style.display="block";
+}
+
+// chat
+function sendMsg(){
+  let t=input.value;
+  if(!t) return;
+
+  chat.innerHTML+="<div class='user'>"+t+"</div><br>";
+  chat.innerHTML+="<div class='typing' id='typing2'>Typing...</div>";
+  chat.scrollTop=chat.scrollHeight;
+
+  setTimeout(()=>{
+    document.getElementById("typing2").remove();
+    let r=reply(t.toLowerCase());
+    chat.innerHTML+="<div class='bot'>"+r+"</div><br>";
+    chat.scrollTop=chat.scrollHeight;
+  },1500);
+
+  input.value="";
+}
+
+// smart reply
+function reply(t){
+  if(t.includes("love")) return "I love you more 💙";
+  if(t.includes("miss")) return "I miss you too 🥺";
+  if(t.includes("sad")) return "Don't be sad, I'm here 💕";
+  return ["Thinking of you 💙","Always yours ❤️","Can't wait to meet 😍"][Math.floor(Math.random()*3)];
+}
+
+// slideshow
+let imgs=["1.jpg","2.jpg","3.jpg"];
+let i=0;
+setInterval(()=>{
+  i=(i+1)%imgs.length;
+  slide.src=imgs[i];
+},2000);
+
+// hearts
+setInterval(()=>{
+  let h=document.createElement("div");
+  h.innerHTML="💙";
+  h.className="heart";
+  h.style.left=Math.random()*100+"vw";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),5000);
+},600);
+
+</script>
+
+</body>
+</html>
+<button onclick="window.location='chat.html'">
+💬 Private Chat
+</button>
+<script src="https://unpkg.com/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+
+<script>
+function startCall(){
+  const appID = 1755092401; // yaha apna daal
+  const serverSecret = "97db087c46371bd75a8e2f6a08a0b1d0"; // yaha apna daal
+
+  const userID = Math.floor(Math.random()*10000)+"";
+  const userName = "User"+userID;
+
+  const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
+    appID,
+    serverSecret,
+    "room1", // same room id dono me same hona chahiye
+    userID,
+    userName
+  );
+
+  const zp = ZegoUIKitPrebuilt.create(kitToken);
+
+  zp.joinRoom({
+    container: document.body,
+    sharedLinks: [{
+      name: 'Join Link',
+      url: window.location.href
+    }],
+    scenario: {
+      mode: ZegoUIKitPrebuilt.OneONoneCall
+    }
+  });
+}
+</script>
+<button onclick="startCall()">📞 Start Call</button>
